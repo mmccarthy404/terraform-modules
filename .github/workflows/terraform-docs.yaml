@@ -1,0 +1,17 @@
+name: terraform-docs
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform-docs:
+    uses: mmccarthy404/reusable-workflows/.github/workflows/terraform-docs.yaml@main
+    secrets: inherit
+    with:
+      working-dir: terraform-aws-nat-instance
+      output-file: README.md
