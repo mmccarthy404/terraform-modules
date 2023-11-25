@@ -39,7 +39,7 @@ resource "aws_security_group" "this" {
   vpc_id      = data.aws_vpc.selected.id
 
   tags = merge(
-    {Name = "${var.name_prefix}-sg"},
+    { Name = "${var.name_prefix}-sg" },
     var.tags
   )
 }
@@ -72,7 +72,7 @@ resource "aws_network_interface" "this" {
   source_dest_check = false
 
   tags = merge(
-    {Name = "${var.name_prefix}-sg"},
+    { Name = "${var.name_prefix}-sg" },
     var.tags
   )
 }
