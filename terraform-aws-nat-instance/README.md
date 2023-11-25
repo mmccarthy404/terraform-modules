@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Terraform module deploys a NAT instance using [Andrew Guenther's fck_nat AMI](https://github.com/AndrewGuenther/fck-nat). The NAT instance is created as part of an autoscaling group to ensure automated disaster recovery.
+This Terraform module deploys a NAT instance using [Andrew Guenther's fck_nat AMI](https://github.com/AndrewGuenther/fck-nat). The NAT instance is created as part of an autoscaling group to ensure automated disaster recovery. For production workloads, best practice is to use a NAT gateway for [better availability and bandwidth](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-comparison.html); **I do not recommend this module for production workloads**. 
 
 ## Usage
 
@@ -18,7 +18,7 @@ module "nat_instance" {
   tags = {
     terraform   = "true"
     project     = "vpc-project"
-    environment = "prd"
+    environment = "dev"
   }
 }
 
