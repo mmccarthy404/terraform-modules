@@ -38,7 +38,10 @@ resource "aws_security_group" "this" {
   description = "${var.name_prefix}-sg"
   vpc_id      = data.aws_vpc.selected.id
 
-  tags = var.tags
+  tags = merge(
+    {Name = "${var.name_prefix}-sg"},
+    var.tags
+  )
 }
 
 resource "aws_vpc_security_group_ingress_rule" "cidr_block" {
@@ -68,7 +71,10 @@ resource "aws_network_interface" "this" {
 
   source_dest_check = false
 
-  tags = var.tags
+  tags = merge(
+    {Name = "${var.name_prefix}-sg"},
+    var.tags
+  )
 }
 
 resource "aws_launch_template" "this" {
