@@ -1,3 +1,42 @@
+# Terraform Module: terraform-aws-nat-instance
+
+## Overview
+
+This Terraform module deploys a NAT instance using [Andrew Guenther's fck_nat AMI](https://github.com/AndrewGuenther/fck-nat). The NAT instance is created as part of an autoscaling group to ensure automated disaster recovery.
+
+## Usage
+
+```hcl
+# Create NAT instance in public subnet
+module "nat_instance" {
+  source        = "git::https://github.com/mmccarthy404/terraform-modules//terraform-aws-nat-instance?ref=483e821adf1164dde52652c793aec558294ed6e3" #v1.0.0
+  instance_type = "t4g.nano"
+  name_prefix   = "nat-instance"
+  vpc_id        = "vpc-xxxxxxxxxxxxxxxxx"
+  subnet_id     = "subnet-xxxxxxxxxxxxxxxxx" # public subnet
+
+  tags = {
+    terraform   = "true"
+    project     = "vpc-project"
+    environment = "prd"
+  }
+}
+
+# Define list of all route tables in selected VPC to route to NAT instance 
+locals {
+  route_table_ids = ["rtb-xxxxxxxxxxxxxxxxx", "rtb-yyyyyyyyyyyyyyyyy"] # one or more route table IDs
+}
+
+# Create route(s) to NAT instance ENI in root table(s)
+resource "aws_route" "nat_instance" {
+  for_each = toset(local.route_table_ids)
+
+  route_table_id         = each.value
+  destination_cidr_block = "0.0.0.0/0"
+  network_interface_id   = module.nat_instance.this.aws_network_interface.id
+}
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -47,3 +86,11 @@ No modules.
 |------|-------------|
 | <a name="output_this"></a> [this](#output\_this) | n/a |
 <!-- END_TF_DOCS -->
+
+## Note
+
+This module requires that the fck_nat AMI is [available in the selected AWS region](https://github.com/AndrewGuenther/fck-nat/blob/main/packer/fck-nat-public-all-regions.pkrvars.hcl) for successful deployment.
+
+## Licence
+
+This Terraform module is open source and available under the [MIT License](https://github.com/mmccarthy404/terraform-modules/blob/main/LICENSE).
