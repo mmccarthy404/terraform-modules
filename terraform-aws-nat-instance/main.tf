@@ -24,28 +24,27 @@ data "aws_ami" "fck_nat" {
   }
 }
 
-data "aws_vpc" "selected" {
-  id = var.vpc_id
+data "aws_subnet" "selected" {
+  id = var.subnet_id
 }
 
-data "aws_subnet" "selected" {
-  id     = var.subnet_id
-  vpc_id = var.vpc_id
+data "aws_vpc" "selected" {
+  id = data.aws_subnet.selected.vpc_id
 }
 
 resource "aws_security_group" "this" {
-  name        = "${var.name_prefix}-sg"
-  description = "${var.name_prefix}-sg"
+  name        = var.name
+  description = var.name
   vpc_id      = data.aws_vpc.selected.id
 
   tags = merge(
-    { Name = "${var.name_prefix}-sg" },
-    var.tags
+    var.tags,
+    { Name = var.name }
   )
 }
 
 resource "aws_vpc_security_group_ingress_rule" "cidr_block" {
-  description       = "Allow all traffic from VPC CIDR block into ${var.name_prefix}-sg"
+  description       = "Allow all traffic from VPC CIDR block into ${var.name} security group"
   security_group_id = aws_security_group.this.id
 
   cidr_ipv4   = data.aws_vpc.selected.cidr_block
@@ -55,7 +54,7 @@ resource "aws_vpc_security_group_ingress_rule" "cidr_block" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "all" {
-  description       = "Allow all traffic out of ${var.name_prefix}-sg"
+  description       = "Allow all traffic out of ${var.name} security group"
   security_group_id = aws_security_group.this.id
 
   cidr_ipv4   = "0.0.0.0/0"
@@ -65,20 +64,20 @@ resource "aws_vpc_security_group_egress_rule" "all" {
 }
 
 resource "aws_network_interface" "this" {
-  description     = "${var.name_prefix}-eni"
+  description     = var.name
   subnet_id       = data.aws_subnet.selected.id
   security_groups = [aws_security_group.this.id]
 
   source_dest_check = false
 
   tags = merge(
-    { Name = "${var.name_prefix}-eni" },
-    var.tags
+    var.tags,
+    { Name = var.name }
   )
 }
 
 resource "aws_launch_template" "this" {
-  name          = "${var.name_prefix}-template"
+  name          = var.name
   image_id      = data.aws_ami.fck_nat.id
   instance_type = var.instance_type
 
@@ -94,7 +93,7 @@ resource "aws_launch_template" "this" {
 }
 
 resource "aws_autoscaling_group" "this" {
-  name               = "${var.name_prefix}-asg"
+  name               = var.name
   availability_zones = [data.aws_subnet.selected.availability_zone]
   desired_capacity   = 1
   max_size           = 1
@@ -107,12 +106,12 @@ resource "aws_autoscaling_group" "this" {
 
   tag {
     key                 = "Name"
-    value               = var.name_prefix
+    value               = var.name
     propagate_at_launch = true
   }
 
   dynamic "tag" {
-    for_each = var.tags
+    for_each = { for k, v in var.tags : k => v if k != "Name" }
     content {
       key                 = tag.key
       value               = tag.value

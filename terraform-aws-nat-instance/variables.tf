@@ -1,22 +1,17 @@
-variable "name_prefix" {
+variable "name" {
   type        = string
-  description = "Prefix used when naming NAT instance and related infrastructure"
+  description = "Name of NAT instance and related infrastructure (overrides 'Name' tags)"
 }
 
 variable "instance_type" {
   type        = string
   default     = "t4g.nano"
-  description = "Instance type of deployed NAT instance (CPU architecture must be arm64 or x86_64)"
-}
-
-variable "vpc_id" {
-  type        = string
-  description = "VPC ID to launch NAT instance in"
+  description = "Instance type of NAT instance (CPU architecture must be arm64 or x86_64)"
 }
 
 variable "subnet_id" {
   type        = string
-  description = "Subnet ID to launch NAT instance in"
+  description = "Subnet ID to launch NAT instance"
 }
 
 variable "tags" {
