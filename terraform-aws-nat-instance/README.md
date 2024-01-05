@@ -83,10 +83,10 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_aws_autoscaling_group"></a> [aws\_autoscaling\_group](#output\_aws\_autoscaling\_group) | Autoscaling group of NAT instance |
-| <a name="output_aws_launch_template"></a> [aws\_launch\_template](#output\_aws\_launch\_template) | Launch template of NAT instance |
-| <a name="output_aws_network_interface"></a> [aws\_network\_interface](#output\_aws\_network\_interface) | Network interface of NAT instance |
-| <a name="output_aws_security_group"></a> [aws\_security\_group](#output\_aws\_security\_group) | Security group of NAT instance |
+| <a name="output_autoscaling_group"></a> [autoscaling\_group](#output\_autoscaling\_group) | Autoscaling group of NAT instance |
+| <a name="output_launch_template"></a> [launch\_template](#output\_launch\_template) | Launch template of NAT instance |
+| <a name="output_network_interface"></a> [network\_interface](#output\_network\_interface) | Network interface of NAT instance |
+| <a name="output_security_group"></a> [security\_group](#output\_security\_group) | Security group of NAT instance |
 <!-- END_TF_DOCS -->
 
 ## Note
