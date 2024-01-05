@@ -74,17 +74,19 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Instance type of deployed NAT instance (CPU architecture must be arm64 or x86\_64) | `string` | `"t4g.nano"` | no |
-| <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix used when naming NAT instance and related infrastructure | `string` | n/a | yes |
-| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | Subnet ID to launch NAT instance in | `string` | n/a | yes |
+| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Instance type of NAT instance (CPU architecture must be arm64 or x86\_64) | `string` | `"t4g.nano"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name of NAT instance and related infrastructure (overrides 'Name' tags) | `string` | n/a | yes |
+| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | Subnet ID to launch NAT instance | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tag keys and values to apply to NAT instance and related infrastrucure | `map(string)` | `{}` | no |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID to launch NAT instance in | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_this"></a> [this](#output\_this) | n/a |
+| <a name="output_autoscaling_group"></a> [autoscaling\_group](#output\_autoscaling\_group) | Autoscaling group of NAT instance |
+| <a name="output_launch_template"></a> [launch\_template](#output\_launch\_template) | Launch template of NAT instance |
+| <a name="output_network_interface"></a> [network\_interface](#output\_network\_interface) | Network interface of NAT instance |
+| <a name="output_security_group"></a> [security\_group](#output\_security\_group) | Security group of NAT instance |
 <!-- END_TF_DOCS -->
 
 ## Note
