@@ -9,10 +9,9 @@ This Terraform module deploys a NAT instance using [Andrew Guenther's fck_nat AM
 ```hcl
 # Create NAT instance in public subnet
 module "nat_instance" {
-  source        = "git::https://github.com/mmccarthy404/terraform-modules//terraform-aws-nat-instance?ref=483e821adf1164dde52652c793aec558294ed6e3" #v1.0.0
+  source        = "git::https://github.com/mmccarthy404/terraform-modules//terraform-aws-nat-instance?ref=1c5b43178fe2bb67a7de2f9401a75690a44d938d" #v1.1.1
   instance_type = "t4g.nano"
-  name_prefix   = "nat-instance"
-  vpc_id        = "vpc-xxxxxxxxxxxxxxxxx"
+  name          = "nat-instance"
   subnet_id     = "subnet-xxxxxxxxxxxxxxxxx" # public subnet
 
   tags = {
