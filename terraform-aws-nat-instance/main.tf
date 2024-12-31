@@ -33,7 +33,7 @@ data "aws_vpc" "selected" {
 }
 
 resource "aws_security_group" "this" {
-  name        = var.name
+  name        = "${var.name}-sg"
   description = var.name
   vpc_id      = data.aws_vpc.selected.id
 
@@ -44,7 +44,7 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "cidr_block" {
-  description       = "Allow all traffic from VPC CIDR block into ${var.name} security group"
+  description       = "Allow all traffic from VPC CIDR block into ${var.name}-sg"
   security_group_id = aws_security_group.this.id
 
   cidr_ipv4   = data.aws_vpc.selected.cidr_block
@@ -54,7 +54,7 @@ resource "aws_vpc_security_group_ingress_rule" "cidr_block" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "all" {
-  description       = "Allow all traffic out of ${var.name} security group"
+  description       = "Allow all traffic out of ${var.name}-sg"
   security_group_id = aws_security_group.this.id
 
   cidr_ipv4   = "0.0.0.0/0"
@@ -64,7 +64,7 @@ resource "aws_vpc_security_group_egress_rule" "all" {
 }
 
 resource "aws_network_interface" "this" {
-  description     = var.name
+  description     = "${var.name}-eni"
   subnet_id       = data.aws_subnet.selected.id
   security_groups = [aws_security_group.this.id]
 
@@ -76,8 +76,43 @@ resource "aws_network_interface" "this" {
   )
 }
 
+resource "aws_iam_role" "this" {
+  name = "${var.name}-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+
+  tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "this" {
+  for_each = toset([
+    "arn:aws:iam::aws:policy/AmazonSSMManagedEC2InstanceDefaultPolicy"
+  ])
+
+  role       = aws_iam_role.this.name
+  policy_arn = each.value
+}
+
+resource "aws_iam_instance_profile" "this" {
+  name = "${var.name}-instance-profile"
+  role = aws_iam_role.this.name
+
+  tags = var.tags
+}
+
 resource "aws_launch_template" "this" {
-  name          = var.name
+  name          = "${var.name}-lt"
   image_id      = data.aws_ami.fck_nat.id
   instance_type = var.instance_type
 
@@ -89,11 +124,15 @@ resource "aws_launch_template" "this" {
     http_tokens = "required"
   }
 
+  iam_instance_profile {
+    name = aws_iam_instance_profile.this.name
+  }
+
   tags = var.tags
 }
 
 resource "aws_autoscaling_group" "this" {
-  name               = var.name
+  name               = "${var.name}-asg"
   availability_zones = [data.aws_subnet.selected.availability_zone]
   desired_capacity   = 1
   max_size           = 1
