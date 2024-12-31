@@ -80,36 +80,14 @@ resource "aws_iam_role" "this" {
   name = "${var.name}-role"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Effect = "Allow"
-      Principal = {
-        Service = "ec2.amazonaws.com"
-      }
-      Action = "sts:AssumeRole"
-    }]
-  })
-
-  tags = var.tags
-}
-
-resource "aws_iam_policy" "this" {
-  name        = "${var.name}-policy"
-  description = "Required permissions for fck-nat features"
-
-  policy = jsonencode({
-    Version = "2012-10-17",
+    Version = "2012-10-17"
     Statement = [
       {
-        Effect = "Allow",
-        Action = [
-          "ec2:AttachNetworkInterface",
-          "ec2:ModifyNetworkInterfaceAttribute",
-          "ec2:AssociateAddress",
-          "ec2:DisassociateAddress",
-          "ssm:GetParameter"
-        ],
-        Resource = "*"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
       }
     ]
   })
@@ -117,14 +95,8 @@ resource "aws_iam_policy" "this" {
   tags = var.tags
 }
 
-resource "aws_iam_role_policy_attachment" "custom" {
-  role       = aws_iam_role.this.name
-  policy_arn = aws_iam_policy.this.arn
-}
-
-resource "aws_iam_role_policy_attachment" "managed" {
+resource "aws_iam_role_policy_attachment" "this" {
   for_each = toset([
-    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
     "arn:aws:iam::aws:policy/AmazonSSMManagedEC2InstanceDefaultPolicy"
   ])
 
