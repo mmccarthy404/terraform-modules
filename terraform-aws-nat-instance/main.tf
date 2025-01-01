@@ -12,7 +12,7 @@ data "aws_ec2_instance_type" "selected" {
 
 data "aws_ami" "fck_nat" {
   most_recent = true
-  owners = ["568608671756"]
+  owners      = ["568608671756"]
 
   filter {
     name   = "name"
