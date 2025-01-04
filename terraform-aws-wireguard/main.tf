@@ -60,7 +60,7 @@ resource "aws_vpc_security_group_egress_rule" "this" {
 
 resource "aws_network_interface" "this" {
   description     = "${var.name}-eni"
-  subnet_id       = data.aws_subnet.selected.id
+  subnet_id       = data.aws_subnet.this.id
   security_groups = [aws_security_group.this.id]
 
   source_dest_check = false
@@ -146,7 +146,7 @@ resource "aws_launch_template" "this" {
 
 resource "aws_autoscaling_group" "this" {
   name               = "${var.name}-asg"
-  availability_zones = [data.aws_subnet.selected.availability_zone]
+  availability_zones = [data.aws_subnet.this.availability_zone]
   desired_capacity   = 1
   max_size           = 1
   min_size           = 1
