@@ -10,8 +10,14 @@ permissions:
 
 jobs:
   terraform-docs:
+    strategy:
+      matrix:
+        dir: 
+          - terraform-aws-nat-instance
+          - terraform-aws-wireguard
+
     uses: mmccarthy404/reusable-workflows/.github/workflows/terraform-docs.yaml@v2.0.0
     secrets: inherit
     with:
-      working-dir: terraform-aws-nat-instance
+      working-dir: ${{ matrix.dir }}
       output-file: README.md
