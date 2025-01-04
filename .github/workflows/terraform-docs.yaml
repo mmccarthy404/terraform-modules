@@ -11,11 +11,11 @@ permissions:
 jobs:
   terraform-docs:
     runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          dir: 
-            - terraform-aws-nat-instance
-            - terraform-aws-wireguard
+    strategy:
+      matrix:
+        dir: 
+          - terraform-aws-nat-instance
+          - terraform-aws-wireguard
 
     steps:
         - name: Checkout Code
