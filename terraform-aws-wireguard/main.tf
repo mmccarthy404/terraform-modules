@@ -28,7 +28,7 @@ data "aws_vpc" "this" {
 resource "aws_security_group" "this" {
   name        = "${var.name}-sg"
   description = var.name
-  vpc_id      = data.aws_vpc.selected.id
+  vpc_id      = data.aws_vpc.this.id
 
   tags = merge(
     var.tags,
