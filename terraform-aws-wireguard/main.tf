@@ -41,6 +41,8 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
   security_group_id = aws_security_group.this.id
 
   cidr_ipv4   = var.wireguard_peer_allowed_ip
+  from_port   = var.wireguard_interface_listen_port
+  to_port     = var.wireguard_interface_listen_port
   ip_protocol = "udp"
 
   tags = var.tags
