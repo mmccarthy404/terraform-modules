@@ -113,7 +113,7 @@ resource "aws_iam_instance_profile" "this" {
 
 resource "aws_launch_template" "this" {
   name          = "${var.name}-lt"
-  image_id      = data.aws_ami.wireguard.id
+  image_id      = data.aws_ami.this.id
   instance_type = var.instance_type
 
   network_interfaces {
