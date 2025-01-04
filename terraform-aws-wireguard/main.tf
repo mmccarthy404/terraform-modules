@@ -37,9 +37,12 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "this" {
-  for_each = toset(distinct(flatten([for peer in var.wireguard_interface_peers : peer.allowed_ips])))
-
-  description       = "Allow UDP traffic from ${each.key} into ${var.name}-sg"
+  for_each = {
+    for idx, ip in distinct(flatten([for peer in var.wireguard_interface_peers : peer.allowed_ips])) :
+    idx => ip
+  }
+  
+  description       = "Allow UDP traffic from Wireguard interface peer into ${var.name}-sg"
   security_group_id = aws_security_group.this.id
 
   cidr_ipv4   = each.key
