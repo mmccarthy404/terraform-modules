@@ -136,6 +136,10 @@ resource "aws_launch_template" "this" {
     interface_post_up     = var.wireguard_interface_post_up
     interface_post_down   = var.wireguard_interface_post_down
     interface_peers       = var.wireguard_interface_peers
+    interface_peers = [for peer in var.wireguard_interface_peers : {
+      public_key  = peer.public_key,
+      allowed_ips = join(",", peer.allowed_ips)
+    }]
   }))
 
   tags = merge(

@@ -18,7 +18,7 @@ PostDown = ${interface_post_down}
 %{ for peer in interface_peers }
 [Peer]
 PublicKey = ${peer.public_key}
-AllowedIPs = %{ join(",", peer.allowed_ips) }
+AllowedIPs = ${peer.allowed_ips}
 %{ endfor }
 EOF
 
