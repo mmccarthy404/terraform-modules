@@ -15,11 +15,9 @@ DNS = ${interface_dns}
 PostUp = ${interface_post_up}
 PostDown = ${interface_post_down}
 
-%{ for peer in interface_peers }
 [Peer]
-PublicKey = ${peer.public_key}
-AllowedIPs = ${peer.allowed_ips}
-%{ endfor }
+PublicKey = ${peer_public_key}
+AllowedIPs = ${peer_allowed_ip}
 EOF
 
 # Enable IP forwarding in the kernel

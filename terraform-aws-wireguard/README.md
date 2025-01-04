@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Terraform module deploys a [Wireguard](https://www.wireguard.com/) interface instance into a select public subnet to function as a VPN, enabling access to resources in private subnets from peers. The Wireguard interface instance is created as part of an autoscaling group to ensure automated disaster recovery, and a required elastic IP ensures that connections to peers are preserved though this recovery.
+This Terraform module deploys a [WireGuard](https://www.wireguard.com/) interface instance into a select public subnet to function as a VPN, enabling access to resources in private subnets from peers. The WireGuard interface instance is created as part of an autoscaling group to ensure automated disaster recovery, and a required elastic IP ensures that connections to peers are preserved though this recovery.
 
 ## Usage
 
@@ -78,7 +78,7 @@ No modules.
 
 ## Note
 
-This module only manages the Wireguard interface acting as the VPN server in AWS, and all peers must be configured manually. Additionally it is prerequisite that  all [Wireguard keys](https://www.wireguard.com/quickstart/#key-generation) be generated externally and supplied as variables before deployment.
+This module only manages the WireGuard interface acting as the VPN server in AWS, and all peers must be configured manually. Additionally it is prerequisite that  all [WireGuard keys](https://www.wireguard.com/quickstart/#key-generation) be generated externally and supplied as variables before deployment.
 
 ## Licence
 

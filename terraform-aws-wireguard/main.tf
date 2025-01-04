@@ -37,15 +37,10 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "this" {
-  for_each = {
-    for idx, ip in distinct(flatten([for peer in var.wireguard_interface_peers : peer.allowed_ips])) :
-    idx => ip
-  }
-
-  description       = "Allow UDP traffic from Wireguard interface peer into ${var.name}-sg"
+  description       = "Allow UDP traffic from WireGuard peer allowed IP into ${var.name}-sg"
   security_group_id = aws_security_group.this.id
 
-  cidr_ipv4   = each.value
+  cidr_ipv4   = var.wireguard_peer_allowed_ip
   ip_protocol = "udp"
 
   tags = var.tags
@@ -138,11 +133,8 @@ resource "aws_launch_template" "this" {
     interface_dns         = var.wireguard_interface_dns
     interface_post_up     = var.wireguard_interface_post_up
     interface_post_down   = var.wireguard_interface_post_down
-    interface_peers       = var.wireguard_interface_peers
-    interface_peers = [for peer in var.wireguard_interface_peers : {
-      public_key  = peer.public_key,
-      allowed_ips = join(",", peer.allowed_ips)
-    }]
+    peer_public_key       = var.wireguard_peer_public_key
+    peer_allowed_ip       = var.wireguard_peer_allowed_ip
   }))
 
   tags = merge(
