@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Update system and install necessary packages
-apt-get update
-apt-get install -y wireguard wireguard-tools iptables
+dnf update -y
+dnf install -y wireguard-tools iptables
 
 # Set up WireGuard configuration
 cat <<EOF > /etc/wireguard/wg0.conf
@@ -23,6 +23,9 @@ EOF
 # Enable IP forwarding in the kernel
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
+
+# Ensure WireGuard kernel module is loaded
+modprobe wireguard
 
 # Enable and start WireGuard
 systemctl enable wg-quick@wg0
