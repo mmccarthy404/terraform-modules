@@ -1,21 +1,21 @@
 output "security_group" {
   value       = aws_security_group.this
-  description = "Security group of Wireguard interface instance"
+  description = "Security group of WireGuard interface instance"
 }
 
 output "network_interface" {
   value       = aws_network_interface.this
-  description = "Network interface of Wireguard interface instance"
+  description = "Network interface of WireGuard interface instance"
 }
 
 output "iam_role" {
   value       = aws_iam_role.this
-  description = "IAM role of Wireguard interface instance"
+  description = "IAM role of WireGuard interface instance"
 }
 
 output "iam_instance_profile" {
   value       = aws_iam_instance_profile.this
-  description = "IAM instance profile of Wireguard interface instance"
+  description = "IAM instance profile of WireGuard interface instance"
 }
 
 output "launch_template" {
