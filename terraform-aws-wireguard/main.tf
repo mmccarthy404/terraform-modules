@@ -45,7 +45,7 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
   description       = "Allow UDP traffic from Wireguard interface peer into ${var.name}-sg"
   security_group_id = aws_security_group.this.id
 
-  cidr_ipv4   = each.key
+  cidr_ipv4   = each.value
   ip_protocol = "udp"
 
   tags = var.tags
