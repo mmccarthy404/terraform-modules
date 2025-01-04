@@ -2,11 +2,42 @@
 
 ## Overview
 
-This Terraform module deploys a [WireGuard](https://www.wireguard.com/) interface instance into a select public subnet to function as a VPN, enabling access to resources in private subnets from peers. The WireGuard interface instance is created as part of an autoscaling group to ensure automated disaster recovery, and a required elastic IP ensures that connections to peers are preserved though this recovery.
+This Terraform module deploys a [WireGuard](https://www.wireguard.com/) interface instance into a select public subnet to function as a VPN, enabling access to resources in private subnets from peers. The WireGuard interface instance is created as part of an autoscaling group to ensure automated disaster recovery, and a required externally-managed elastic IP ensures that connections to peers are preserved though this recovery.
 
 ## Usage
 
 ```hcl
+# Create example tags as a local
+locals {
+  tags = {
+    terraform   = "true"
+    project     = "aws-networking"
+    environment = "prd"
+  }
+}
+
+# Create EIP outside of WireGuard module to separate life cycles, allowing EIPs to be kept even if WireGuard module is destroyed
+resource "aws_eip" "wireguard" {
+  domain = "vpc"
+
+  tags = local.tags
+}
+
+# Create WireGuard interface VPN enabling access to private subnets from peered interfaces
+module "wireguard" {
+  source        = "git::https://github.com/mmccarthy404/terraform-modules//terraform-aws-wireguard?ref=cd8aabf5652a2752f47c1cd29490ad5ee9eaae43" #v2.0.0
+  instance_type = "t4g.nano"
+  name          = "wireguard-instance"
+  subnet_id     = "subnet-xxxxxxxxxxxxxxxxx" # public subnet
+
+  elastic_ip = aws_eip.wireguard.id
+
+  wireguard_interface_private_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" # Treat this value as sensitive
+  wireguard_peer_public_key       = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" # Treat this value as sensitive
+  wireguard_peer_allowed_ip       = "1.2.3.4/32" # Treat this value as sensitive
+
+  tags = local.tags
+}
 ```
 
 <!-- BEGIN_TF_DOCS -->
