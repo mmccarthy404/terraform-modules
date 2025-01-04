@@ -10,20 +10,14 @@ permissions:
 
 jobs:
   terraform-docs:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         dir: 
           - terraform-aws-nat-instance
           - terraform-aws-wireguard
 
-    steps:
-        - name: Checkout Code
-          uses: actions/checkout@v3
-
-        - name: Run Terraform Docs
-          uses: mmccarthy404/reusable-workflows/.github/workflows/terraform-docs.yaml@v2.0.0
-          secrets: inherit
-          with:
-            working-dir: ${{ matrix.dir }}
-            output-file: README.md
+    uses: mmccarthy404/reusable-workflows/.github/workflows/terraform-docs.yaml@v2.0.0
+    secrets: inherit
+    with:
+      working-dir: ${{ matrix.dir }}
+      output-file: README.md
