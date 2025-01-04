@@ -41,7 +41,7 @@ resource "aws_vpc_security_group_ingress_rule" "this" {
     for idx, ip in distinct(flatten([for peer in var.wireguard_interface_peers : peer.allowed_ips])) :
     idx => ip
   }
-  
+
   description       = "Allow UDP traffic from Wireguard interface peer into ${var.name}-sg"
   security_group_id = aws_security_group.this.id
 
