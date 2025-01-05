@@ -107,9 +107,9 @@ No modules.
 | <a name="input_wireguard_interface_post_down"></a> [wireguard\_interface\_post\_down](#input\_wireguard\_interface\_post\_down) | WireGuard interface PostDown script | `string` | `"iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE"` | no |
 | <a name="input_wireguard_interface_post_up"></a> [wireguard\_interface\_post\_up](#input\_wireguard\_interface\_post\_up) | WireGuard interface PostUp script | `string` | `"iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"` | no |
 | <a name="input_wireguard_interface_private_key"></a> [wireguard\_interface\_private\_key](#input\_wireguard\_interface\_private\_key) | WireGuard interface private key | `string` | n/a | yes |
-| <a name="input_wireguard_interface_subnet"></a> [wireguard\_interface\_subnet](#input\_wireguard\_interface\_subnet) | WireGuard interface subnet | `string` | `"192.168.2.0/24"` | no |
-| <a name="input_wireguard_peer_allowed_ip"></a> [wireguard\_peer\_allowed\_ip](#input\_wireguard\_peer\_allowed\_ip) | WireGuard peer allowed IP | `string` | n/a | yes |
+| <a name="input_wireguard_peer_allowed_ip"></a> [wireguard\_peer\_allowed\_ip](#input\_wireguard\_peer\_allowed\_ip) | WireGuard peer allowed IP | `string` | `"192.168.2.2/32"` | no |
 | <a name="input_wireguard_peer_public_key"></a> [wireguard\_peer\_public\_key](#input\_wireguard\_peer\_public\_key) | WireGuard peer public key | `string` | n/a | yes |
+| <a name="input_wireguard_peer_source_ip"></a> [wireguard\_peer\_source\_ip](#input\_wireguard\_peer\_source\_ip) | Source IP of WireGuard peer (peer public IP) | `string` | n/a | yes |
 
 ## Outputs
 
