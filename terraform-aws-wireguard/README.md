@@ -6,22 +6,20 @@ This Terraform module deploys a [WireGuard](https://www.wireguard.com/) interfac
 
 ## Usage
 
-Peer should be manually configured with `client.conf` file like below:
+Client WireGuard interface should be manually configured as `client.conf`:
 
 ```ini
 [Interface]
 PrivateKey = <WireGuard client interface private key>
- # IP address should match that specified by var.wireguard_peer_allowed_ip
-Address = 192.168.2.2/32
+Address = 192.168.2.2/32 # IP address should match that specified by var.wireguard_peer_allowed_ip
 
 [Peer]
 PublicKey = <WireGuard server interface public key>
-# Port should match that specified by wireguard_interface_listen_port
-Endpoint = <public IP of WireGuard interface instance>:51820
-# Allowed IPs should match both AWS VPC CIDR and
-# WireGuard VPC CIDR specified by var.wireguard_interface_address
-AllowedIPs = 10.0.0.0/16, 192.168.2.0/24
+Endpoint = <public IP of WireGuard interface instance>:51820 # Port should match that specified by wireguard_interface_listen_port
+AllowedIPs = 10.0.0.0/16, 192.168.2.0/24 # Allowed IPs should match both AWS VPC CIDR and WireGuard VPC CIDR specified by var.wireguard_interface_address
 ```
+
+Server WireGuard interface is created with this Terraform module:
 
 ```hcl
 # Create example tags as a local
@@ -42,7 +40,7 @@ resource "aws_eip" "wireguard" {
 
 # Create WireGuard interface VPN enabling access to private subnets from peered interfaces
 module "wireguard" {
-  source        = "git::https://github.com/mmccarthy404/terraform-modules//terraform-aws-wireguard?ref=cd8aabf5652a2752f47c1cd29490ad5ee9eaae43" #v2.0.0
+  source        = "git::https://github.com/mmccarthy404/terraform-modules//terraform-aws-wireguard?ref=a5fd219bcd14cbc8ddf392e79dff9f6a05fc105f" #v2.2.0
   instance_type = "t4g.nano"
   name          = "wireguard-instance"
   subnet_id     = "subnet-xxxxxxxxxxxxxxxxx" # public subnet
@@ -51,7 +49,7 @@ module "wireguard" {
 
   wireguard_interface_private_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" # Treat this value as sensitive
   wireguard_peer_public_key       = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" # Treat this value as sensitive
-  wireguard_peer_allowed_ip       = "1.2.3.4/32" # Treat this value as sensitive
+  wireguard_peer_source_ip        = "X.X.X.X/32" # Treat this value as sensitive
 
   tags = local.tags
 }
