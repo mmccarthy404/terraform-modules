@@ -19,12 +19,6 @@ variable "elastic_ip" {
   description = "Elastic IP _allocation ID for the WireGuard interface instance"
 }
 
-variable "wireguard_interface_subnet" {
-  type        = string
-  default     = "192.168.2.0/24"
-  description = "WireGuard interface subnet"
-}
-
 variable "wireguard_interface_private_key" {
   sensitive   = true
   type        = string
@@ -68,9 +62,15 @@ variable "wireguard_peer_public_key" {
 }
 
 variable "wireguard_peer_allowed_ip" {
+  type        = string
+  default     = "192.168.2.2/32"
+  description = "WireGuard peer allowed IP"
+}
+
+variable "wireguard_peer_source_ip" {
   sensitive   = true
   type        = string
-  description = "WireGuard peer allowed IP"
+  description = "Source IP of WireGuard peer (peer public IP)"
 }
 
 variable "tags" {
