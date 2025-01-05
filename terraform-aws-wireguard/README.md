@@ -6,6 +6,23 @@ This Terraform module deploys a [WireGuard](https://www.wireguard.com/) interfac
 
 ## Usage
 
+Peer should be manually configured with `client.conf` file like below:
+
+```ini
+[Interface]
+PrivateKey = <WireGuard client interface private key>
+ # IP address should match that specified by var.wireguard_peer_allowed_ip
+Address = 192.168.2.2/32
+
+[Peer]
+PublicKey = <WireGuard server interface public key>
+# Port should match that specified by wireguard_interface_listen_port
+Endpoint = <public IP of WireGuard interface instance>:51820
+# Allowed IPs should match both AWS VPC CIDR and
+# WireGuard VPC CIDR specified by var.wireguard_interface_address
+AllowedIPs = 10.0.0.0/16, 192.168.2.0/24
+```
+
 ```hcl
 # Create example tags as a local
 locals {
