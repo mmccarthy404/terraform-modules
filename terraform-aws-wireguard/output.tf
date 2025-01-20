@@ -29,6 +29,6 @@ output "autoscaling_group" {
 }
 
 output "wireguard_cidr" {
-  value       = cidrsubnet(var.wireguard_cidr, 0, 0)
+  value       = cidrsubnet(var.wireguard_interface_address, 0, 0)
   description = "WireGuard CIDR"
 }
