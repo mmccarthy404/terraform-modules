@@ -28,7 +28,7 @@ output "autoscaling_group" {
   description = "Autoscaling group of NAT instance"
 }
 
-output "wireguard_interface_address" {
-  value       = var.wireguard_interface_address
-  description = "WireGuard interface address"
+output "wireguard_cidr" {
+  value       = cidrsubnet(var.wireguard_cidr, 0, 0)
+  description = "WireGuard CIDR"
 }

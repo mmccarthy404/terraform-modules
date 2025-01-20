@@ -64,7 +64,7 @@ resource "aws_route" "wireguard_instance" {
   for_each = toset(local.route_table_ids)
 
   route_table_id         = each.value
-  destination_cidr_block = module.wireguard.wireguard_interface_address
+  destination_cidr_block = module.wireguard.wireguard_cidr
   network_interface_id   = module.wireguard.aws_network_interface.id
 }
 ```
