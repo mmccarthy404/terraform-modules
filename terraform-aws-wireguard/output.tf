@@ -27,3 +27,8 @@ output "autoscaling_group" {
   value       = aws_autoscaling_group.this
   description = "Autoscaling group of NAT instance"
 }
+
+output "wireguard_interface_address" {
+  value       = var.wireguard_interface_address
+  description = "WireGuard interface address"
+}

@@ -49,9 +49,23 @@ module "wireguard" {
 
   wireguard_interface_private_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" # Treat this value as sensitive
   wireguard_peer_public_key       = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=" # Treat this value as sensitive
-  wireguard_peer_source_ip        = "X.X.X.X/32" # Treat this value as sensitive
+  wireguard_peer_source_ip        = "x.x.x.x/32" # Treat this value as sensitive
 
   tags = local.tags
+}
+
+# Define list of all route tables in selected VPC to route to WireGuard instance 
+locals {
+  route_table_ids = ["rtb-xxxxxxxxxxxxxxxxx", "rtb-yyyyyyyyyyyyyyyyy"] # one or more route table IDs
+}
+
+# Create route(s) to WireGuard instance ENI in root table(s)
+resource "aws_route" "wireguard_instance" {
+  for_each = toset(local.route_table_ids)
+
+  route_table_id         = each.value
+  destination_cidr_block = module.wireguard.wireguard_interface_address
+  network_interface_id   = module.wireguard.aws_network_interface.id
 }
 ```
 
@@ -121,6 +135,7 @@ No modules.
 | <a name="output_launch_template"></a> [launch\_template](#output\_launch\_template) | Launch template of NAT instance |
 | <a name="output_network_interface"></a> [network\_interface](#output\_network\_interface) | Network interface of WireGuard interface instance |
 | <a name="output_security_group"></a> [security\_group](#output\_security\_group) | Security group of WireGuard interface instance |
+| <a name="output_wireguard_interface_address"></a> [wireguard\_interface\_address](#output\_wireguard\_interface\_address) | WireGuard interface address |
 <!-- END_TF_DOCS -->
 
 ## Note
