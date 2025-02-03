@@ -9,7 +9,7 @@ This Terraform module deploys a NAT instance using [Andrew Guenther's fck_nat AM
 ```hcl
 # Create NAT instance in public subnet
 module "nat_instance" {
-  source        = "git::https://github.com/mmccarthy404/terraform-modules//terraform-aws-nat-instance?ref=d6f5e426d617778ec41e7ff63e427478541e0dda" #v2.2.1
+  source        = "git::https://github.com/michaelmccarthydev/terraform-modules//terraform-aws-nat-instance?ref=d6f5e426d617778ec41e7ff63e427478541e0dda" #v2.2.1
   instance_type = "t4g.nano"
   name          = "nat-instance"
   subnet_id     = "subnet-xxxxxxxxxxxxxxxxx" # public subnet
@@ -97,4 +97,4 @@ This module requires that the fck_nat AMI is [available in the selected AWS regi
 
 ## Licence
 
-This Terraform module is open source and available under the [MIT License](https://github.com/mmccarthy404/terraform-modules/blob/main/LICENSE).
+This Terraform module is open source and available under the [MIT License](https://github.com/michaelmccarthydev/terraform-modules/blob/main/LICENSE).
