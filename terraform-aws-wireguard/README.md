@@ -40,7 +40,7 @@ resource "aws_eip" "wireguard" {
 
 # Create WireGuard interface VPN enabling access to private subnets from peered interfaces
 module "wireguard" {
-  source        = "git::https://github.com/mmccarthy404/terraform-modules//terraform-aws-wireguard?ref=7262f775270c0e0f8499b5ae51dba30da41d7cca" #v2.2.4
+  source        = "git::https://github.com/michaelmccarthydev/terraform-modules//terraform-aws-wireguard?ref=7262f775270c0e0f8499b5ae51dba30da41d7cca" #v2.2.4
   instance_type = "t4g.nano"
   name          = "wireguard-instance"
   subnet_id     = "subnet-xxxxxxxxxxxxxxxxx" # public subnet
@@ -144,4 +144,4 @@ This module only manages the WireGuard interface acting as the VPN server in AWS
 
 ## Licence
 
-This Terraform module is open source and available under the [MIT License](https://github.com/mmccarthy404/terraform-modules/blob/main/LICENSE).
+This Terraform module is open source and available under the [MIT License](https://github.com/michaelmccarthydev/terraform-modules/blob/main/LICENSE).

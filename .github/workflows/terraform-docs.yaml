@@ -16,7 +16,7 @@ jobs:
           - terraform-aws-nat-instance
           - terraform-aws-wireguard
 
-    uses: mmccarthy404/reusable-workflows/.github/workflows/terraform-docs.yaml@v2.0.0
+    uses: michaelmccarthydev/reusable-workflows/.github/workflows/terraform-docs.yaml@v2.0.0
     secrets: inherit
     with:
       working-dir: ${{ matrix.dir }}
